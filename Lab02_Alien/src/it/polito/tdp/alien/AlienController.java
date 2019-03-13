@@ -39,17 +39,46 @@ public class AlienController {
     	assert btnReset != null : "fx:id=\"btnReset\" was not injected: check your FXML file 'Alien.fxml'.";
     	
     }
+    
+    AlienDictionary A = new AlienDictionary();
   
     
     @FXML
     void doTranslate(ActionEvent event) {
-    	    	
+    	if(txtWord.getText().contains(" ")) {
+    		String parole[] = txtWord.getText().split(" ");
+    		
+    		String alienWord = parole[0];
+    		String translation = parole[1];
+    		
+    		if(alienWord.matches("[a-zA-Z]+") && translation.matches("[a-zA-Z]+")) {
+    			A.addWord(alienWord, translation);
+    			txtResult.appendText("Parola aggiunta al dizionario\n");
+    		}
+    		else
+    			txtResult.appendText("Formato dell'input non valido!\n");
+    	}
+    	
+    	else if(txtWord.getText().matches("[a-zA-Z]+")) {
+    		String risultato = A.translateWord(txtWord.getText().toLowerCase());
+    		
+    		if(risultato == null) 
+    			txtResult.appendText("Parola non presente nel dizionario\n");
+    		else
+    			txtResult.appendText(risultato);
+    	}
+    	
+    	else
+    		txtResult.appendText("Formato dell'input non valido!\n");
+    	
+    	txtWord.clear();
     }
     
     
     @FXML
     void doReset(ActionEvent event) {
-
+    	txtWord.clear();
+    	txtResult.clear();
     }
     
 }
